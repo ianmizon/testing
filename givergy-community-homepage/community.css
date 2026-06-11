@@ -134,7 +134,7 @@ img { display: block; }
 .tool {
   display: flex; flex-direction: column; gap: 10px; text-align: left;
   padding: 22px; border-radius: var(--giv-radius-card);
-  background: #fff; border: 1px solid var(--giv-grey-25); cursor: pointer;
+  background: #fff; border: 1px solid var(--giv-grey-25);
   transition: box-shadow 180ms, transform 180ms, border-color 180ms;
 }
 .tool:hover { box-shadow: var(--giv-shadow-soft); transform: translateY(-2px); border-color: var(--giv-cyan); }
@@ -149,6 +149,12 @@ img { display: block; }
 .tool__icon.purple .giv-icon { color: var(--giv-purple); }
 .tool h4 { margin: 0; font-size: 16px; font-weight: 800; color: var(--giv-grey-100); display: flex; align-items: center; gap: 8px; }
 .tool p { margin: 0; font-size: 13px; color: var(--giv-fg-2); line-height: 1.45; }
+.tool__links { display: flex; flex-direction: column; gap: 6px; margin-top: auto; padding-top: 4px; }
+.tool__link {
+  display: inline-flex; align-items: center; gap: 4px; align-self: flex-start; cursor: pointer;
+  font-size: 13px; font-weight: 700; color: var(--giv-cyan);
+}
+.tool__link:hover { text-decoration: underline; }
 .tool__ext { font-size: 18px; color: var(--giv-grey-50); margin-left: auto; }
 
 /* ---------------------------------------------------------------- section heads */
@@ -282,3 +288,82 @@ img { display: block; }
 }
 .ctoast .giv-icon { color: var(--giv-success); font-size: 22px; }
 @keyframes toast-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ---- Bookings panel (tabs + search + empty state) */
+.bk-tabs { display: flex; gap: 4px; margin: 20px 0 16px; border-bottom: 1.5px solid var(--giv-grey-25); }
+.bk-tab {
+  padding: 10px 4px; margin-bottom: -1.5px; background: none; border: none; cursor: pointer;
+  font-family: var(--giv-font-body); font-size: 15px; font-weight: 700; color: var(--giv-grey-75);
+  border-bottom: 2.5px solid transparent; transition: color 150ms, border-color 150ms;
+}
+.bk-tab + .bk-tab { margin-left: 24px; }
+.bk-tab:hover { color: var(--giv-navy); }
+.bk-tab.is-active { color: var(--giv-navy); border-bottom-color: var(--giv-cyan); }
+.bk-search { margin-bottom: 20px; }
+.bk-empty {
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px;
+  padding: 32px 16px; color: var(--giv-grey-75);
+}
+.bk-empty .giv-icon { font-size: 40px; color: var(--giv-grey-50); }
+.bk-empty p { margin: 0; font-size: 15px; }
+.bk-empty__link { color: var(--giv-cyan); font-weight: 700; cursor: pointer; }
+.bk-empty__link:hover { text-decoration: underline; }
+
+/* ---- Direct-contact list (support ticket modal) */
+.contact-or {
+  display: flex; align-items: center; gap: 12px; margin: 22px 0 14px;
+  font-size: 13px; font-weight: 700; color: var(--giv-grey-75);
+}
+.contact-or::before, .contact-or::after { content: ""; flex: 1; height: 1px; background: var(--giv-grey-25); }
+.contact-list { display: flex; flex-direction: column; gap: 10px; }
+.contact-row {
+  display: flex; align-items: center; gap: 14px; padding: 12px 14px;
+  border: 1.5px solid var(--giv-grey-25); border-radius: var(--giv-radius-card);
+  cursor: pointer; transition: border-color 150ms, background 150ms;
+}
+.contact-row:hover { border-color: var(--giv-navy); background: var(--giv-grey-2); }
+.contact-row .giv-icon { font-size: 24px; color: var(--giv-cyan); }
+.contact-row__l { display: flex; flex-direction: column; gap: 1px; }
+.contact-row__l strong { font-size: 14px; color: var(--giv-grey-100); }
+.contact-row__l span { font-size: 13px; color: var(--giv-grey-75); }
+
+/* ---- Account details page */
+.acct-page { padding: 28px 0 64px; }
+.acct-page .wrap { max-width: 920px; }
+.acct-page__title { font-size: 30px; margin: 12px 0 24px; color: var(--giv-grey-100); }
+.acct-namecard {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 20px 22px; margin-bottom: 32px;
+  background: var(--giv-grey-2); border: 1px solid var(--giv-grey-25); border-radius: var(--giv-radius-card);
+}
+.acct-namecard__label { font-size: 12px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--giv-grey-75); }
+.acct-namecard__name { font-size: 22px; font-weight: 800; color: var(--giv-grey-100); margin-top: 4px; }
+.acct-namecard__lock { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--giv-grey-75); white-space: nowrap; }
+.acct-namecard__lock .giv-icon { font-size: 18px; }
+.acct-sec { margin-bottom: 34px; }
+.acct-sec__head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
+.acct-sec__head h2 { font-size: 19px; margin: 0; color: var(--giv-grey-100); }
+.acct-table { border: 1px solid var(--giv-grey-25); border-radius: var(--giv-radius-card); overflow: hidden; }
+.acct-row {
+  display: flex; align-items: center; gap: 16px; padding: 14px 18px;
+  border-bottom: 1px solid var(--giv-grey-25); transition: background 120ms;
+}
+.acct-row:last-child { border-bottom: none; }
+.acct-row:hover { background: var(--giv-grey-2); }
+.acct-row__main { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.acct-row__main strong { font-size: 15px; color: var(--giv-grey-100); }
+.acct-row__meta { font-size: 13px; color: var(--giv-grey-75); }
+.acct-row__val { font-size: 14px; font-weight: 700; color: var(--giv-grey-100); white-space: nowrap; }
+.acct-row__link { display: inline-flex; color: var(--giv-grey-75); cursor: pointer; }
+.acct-row__link:hover { color: var(--giv-navy); }
+.spill {
+  display: inline-flex; align-items: center; padding: 3px 11px; border-radius: var(--giv-radius-pill);
+  font-size: 12px; font-weight: 700; white-space: nowrap;
+}
+.spill--green { background: rgba(7,191,145,0.14); color: #06845f; }
+.spill--amber { background: rgba(245,166,35,0.16); color: #a9700a; }
+.spill--grey { background: var(--giv-grey-10); color: var(--giv-grey-75); }
+@media (max-width: 560px) {
+  .acct-row { flex-wrap: wrap; }
+  .acct-namecard { flex-direction: column; align-items: flex-start; }
+}

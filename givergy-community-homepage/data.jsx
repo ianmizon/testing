@@ -270,13 +270,13 @@ const ADVICE = [
 const LINKOUTS = [
   { id: "podcast", title: "Fundraising Podcast", icon: "podcasts", fill: "fill-magenta",
     desc: "Candid conversations with fundraising leaders on what's working right now. New episodes every fortnight.",
-    cta: "Listen now", href: "https://example.com/givergy-podcast", meta: "24 episodes" },
+    cta: "Listen now", href: "https://www.givergy.com/us/podcast/", meta: "24 episodes" },
   { id: "webinars", title: "Fundraising Webinars", icon: "videocam", fill: "fill-cyan",
     desc: "Live and on-demand sessions with the Givergy team and guest experts. Register for what's coming up.",
-    cta: "Browse webinars", href: "https://example.com/givergy-webinars", meta: "Live & on-demand" },
+    cta: "Browse webinars", href: "https://www.givergy.com/us/webinars/", meta: "Live & on-demand" },
   { id: "updates", title: "Product Updates", icon: "rocket_launch", fill: "fill-purple",
     desc: "Every new feature and improvement shipping across the Givergy platform, explained in plain English.",
-    cta: "See what's new", href: "https://example.com/givergy-changelog", meta: "Updated weekly" },
+    cta: "See what's new", href: "https://www.givergy.com/uk/product-updates/", meta: "Updated weekly" },
 ];
 
 // Logged-in account tools surfaced inline
@@ -291,7 +291,7 @@ const TOOLS = [
     desc: "Spin up a new fundraising campaign and start adding your event details.", action: "create" },
   { id: "manage", title: "Manage Campaigns", icon: "dashboard", tone: "magenta",
     desc: "Jump into the Givergy CMS to run your live and upcoming campaigns.", action: "external",
-    href: "https://cms.givergy.com" },
+    href: "https://uk.test.givergy.com/cms-next/events" },
 ];
 
 // Personalised resources (logged-in "for you")
@@ -303,4 +303,23 @@ const FORYOU = [
 
 const MEMBER = { name: "Alex Rivera", org: "Hope Children's Trust", initials: "AR", role: "Campaign Manager", email: "alex@hopetrust.org" };
 
-Object.assign(window, { GUIDES, ADVICE, LINKOUTS, TOOLS, FORYOU, MEMBER });
+// Account page data (contracts / support tickets / invoices) — mocked
+const ACCOUNT = {
+  contracts: [
+    { id: "c1", name: "Givergy Platform — Annual Licence", ref: "CT-2026-0192", status: "Active", term: "01 Jan 2026 – 31 Dec 2026", value: "£12,000 / yr" },
+    { id: "c2", name: "On-site Event Services", ref: "CT-2026-0421", status: "Active", term: "15 Mar 2026 – 16 Mar 2026", value: "£3,450" },
+    { id: "c3", name: "Bid Device Hire — Spring Gala", ref: "CT-2025-0610", status: "Expired", term: "10 Apr 2025 – 12 Apr 2025", value: "£980" },
+  ],
+  tickets: [
+    { id: "t1", subject: "Guest import not matching table numbers", event: "Spring Online Auction 2026", status: "Open", updated: "08 Jun 2026" },
+    { id: "t2", subject: "Payout timing question", event: "Winter Appeal 2025", status: "Awaiting you", updated: "02 Jun 2026" },
+    { id: "t3", subject: "Custom domain for fundraising site", event: "Autumn Gala 2026", status: "Resolved", updated: "21 May 2026" },
+  ],
+  invoices: [
+    { id: "i1", number: "INV-100482", date: "01 Jan 2026", amount: "£12,000.00", status: "Paid" },
+    { id: "i2", number: "INV-100731", date: "15 Mar 2026", amount: "£3,450.00", status: "Paid" },
+    { id: "i3", number: "INV-101044", date: "01 Jun 2026", amount: "£980.00", status: "Due" },
+  ],
+};
+
+Object.assign(window, { GUIDES, ADVICE, LINKOUTS, TOOLS, FORYOU, MEMBER, ACCOUNT });

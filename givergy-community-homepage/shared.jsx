@@ -96,9 +96,7 @@ function ArticleReader({ article, onBack, kicker, crumbs }) {
       {crumbs
         ? <Breadcrumb items={crumbs} />
         : (onBack ? <span className="reader__back" onClick={onBack}><span className="giv-icon">arrow_back</span> Back to {kicker || "articles"}</span> : null)}
-      <div className={"reader__hero " + article.fill}>
-        <span className="thumb-label">{article.cat}</span>
-      </div>
+      <div className={"reader__hero " + article.fill}></div>
       <div className="reader__tag"><span className="tag">{article.cat}</span></div>
       <h1>{article.title}</h1>
       <div className="reader__meta">
@@ -106,7 +104,6 @@ function ArticleReader({ article, onBack, kicker, crumbs }) {
           {article.author.split(" ").map(w => w[0]).slice(0, 2).join("")}
         </span>
         <span style={{ fontWeight: 700, color: "var(--giv-grey-100)" }}>{article.author}</span>
-        <span className="dot"></span><span>{article.read} read</span>
         <span className="dot"></span><span>Updated Jun 2026</span>
       </div>
       <div className="reader__body">
@@ -123,6 +120,33 @@ function ArticleReader({ article, onBack, kicker, crumbs }) {
   );
 }
 
+// ---- Bookings panel (active / complete tabs + search) — mocked, no bookings yet
+function BookingPanel({ onClose, onToast }) {
+  const [tab, setTab] = useState("active");
+  const [q, setQ] = useState("");
+  const makeBooking = () => {};
+  return (
+    <div>
+      <button className="btn btn--cyan btn--block btn--lg" type="button" onClick={makeBooking}>
+        <span className="giv-icon">add</span> Make a Booking
+      </button>
+      <div className="bk-tabs">
+        <button className={"bk-tab" + (tab === "active" ? " is-active" : "")} type="button" onClick={() => { setQ(""); setTab("active"); }}>Active</button>
+        <button className={"bk-tab" + (tab === "complete" ? " is-active" : "")} type="button" onClick={() => { setQ(""); setTab("complete"); }}>Complete</button>
+      </div>
+      <div className="search bk-search">
+        <span className="giv-icon">search</span>
+        <input placeholder={"Search " + tab + " bookings…"} value={q} onChange={(e) => setQ(e.target.value)} />
+      </div>
+      <div className="bk-empty">
+        <span className="giv-icon">inventory_2</span>
+        <p>{q ? "No " + tab + " bookings match your search." : "You have no " + tab + " bookings yet."}</p>
+        <a className="bk-empty__link" onClick={makeBooking}>Make a booking</a>
+      </div>
+    </div>
+  );
+}
+
 // ---- Tool action modals (support ticket / book / account / create) — mocked
 function ToolModal({ tool, member, onClose, onToast }) {
   if (!tool) return null;
@@ -131,48 +155,49 @@ function ToolModal({ tool, member, onClose, onToast }) {
   if (tool === "ticket") {
     title = "Submit a Support Ticket"; sub = "Tell us what's happening and we'll get back to you by email.";
     content = (
-      <form onSubmit={(e) => submit(e, "Support ticket submitted — we'll be in touch shortly.")}>
-        <div className="field"><label>Subject</label><input placeholder="Briefly describe your issue" required /></div>
-        <div className="field"><label>Category</label>
-          <select defaultValue="auctions"><option value="auctions">Auctions</option><option value="payments">Payments &amp; payouts</option><option value="guests">Guests &amp; check-in</option><option value="website">Fundraising website</option><option value="other">Something else</option></select>
+      <React.Fragment>
+        <form onSubmit={(e) => submit(e, "Ticket created – support team will get in touch by email.")}>
+          <div className="field"><label>Subject</label><input placeholder="Briefly describe your issue" required /></div>
+          <div className="field"><label>Event</label>
+            <select defaultValue="" required>
+              <option value="" disabled>Select an event…</option>
+              <option>Autumn Gala 2026</option>
+              <option>Spring Online Auction 2026</option>
+              <option>Winter Appeal 2025</option>
+              <option>Not event-specific</option>
+            </select>
+          </div>
+          <div className="field"><label>Message</label><textarea placeholder="Include what you expected and what happened." required></textarea></div>
+          <button className="btn btn--cyan btn--block btn--lg" type="submit">Submit Ticket</button>
+        </form>
+        <div className="contact-or">Or reach us directly</div>
+        <div className="contact-list">
+          <a className="contact-row" href="https://wa.me/447700900123" target="_blank" rel="noopener noreferrer">
+            <span className="giv-icon">chat</span>
+            <span className="contact-row__l"><strong>WhatsApp</strong><span>+44 7700 900123</span></span>
+          </a>
+          <a className="contact-row" href="sms:+447700900124">
+            <span className="giv-icon">sms</span>
+            <span className="contact-row__l"><strong>Text us (SMS)</strong><span>+44 7700 900124</span></span>
+          </a>
+          <a className="contact-row" href="tel:+442038845588">
+            <span className="giv-icon">call</span>
+            <span className="contact-row__l"><strong>Call us</strong><span>+44 20 3884 5588</span></span>
+          </a>
         </div>
-        <div className="field"><label>Details</label><textarea placeholder="Include campaign name, what you expected, and what happened." required></textarea></div>
-        <button className="btn btn--cyan btn--block btn--lg" type="submit">Submit Ticket</button>
-      </form>
+      </React.Fragment>
     );
   } else if (tool === "book") {
-    title = "Book Staff or Equipment"; sub = "Reserve on-site support for your next event. We'll confirm availability.";
-    content = (
-      <form onSubmit={(e) => submit(e, "Booking request sent — our events team will confirm availability.")}>
-        <div className="field"><label>What do you need?</label>
-          <select defaultValue="devices"><option value="devices">Bid devices &amp; tablets</option><option value="staff">On-site event staff</option><option value="screens">Display screens</option><option value="full">Full managed service</option></select>
-        </div>
-        <div className="field"><label>Event date</label><input type="date" required /></div>
-        <div className="field"><label>Expected guests</label><input type="number" placeholder="e.g. 200" min="1" /></div>
-        <button className="btn btn--cyan btn--block btn--lg" type="submit">Request Booking</button>
-      </form>
-    );
-  } else if (tool === "account") {
-    title = "Account Details"; sub = "Manage your profile and organisation.";
-    content = (
-      <form onSubmit={(e) => submit(e, "Account details saved.")}>
-        <div className="field"><label>Full name</label><input defaultValue={member.name} /></div>
-        <div className="field"><label>Organisation</label><input defaultValue={member.org} /></div>
-        <div className="field"><label>Role</label><input defaultValue={member.role} /></div>
-        <div className="field"><label>Email</label><input type="email" defaultValue={member.email} /></div>
-        <button className="btn btn--cyan btn--block btn--lg" type="submit">Save Changes</button>
-      </form>
-    );
+    title = "Your Bookings"; sub = "Reserve on-site support for your next event. We'll confirm availability.";
+    content = <BookingPanel onClose={onClose} onToast={onToast} />;
   } else if (tool === "create") {
     title = "Create a Campaign"; sub = "Set up the essentials — you can fine-tune everything in the CMS.";
     content = (
-      <form onSubmit={(e) => submit(e, "Campaign created — opening it in the CMS.")}>
+      <form onSubmit={(e) => submit(e, "Campaign created – Go to the CMS to manage this campaign")}>
         <div className="field"><label>Campaign name</label><input placeholder="e.g. Autumn Gala 2026" required /></div>
-        <div className="field"><label>Campaign type</label>
-          <select defaultValue="gala"><option value="gala">Gala / Event</option><option value="auction">Online auction</option><option value="appeal">Donation appeal</option><option value="draw">Prize draw</option></select>
-        </div>
         <div className="field"><label>Event date</label><input type="date" /></div>
-        <button className="btn btn--cyan btn--block btn--lg" type="submit">Create Campaign</button>
+        <button className="btn btn--cyan btn--block btn--lg" type="button" onClick={() => { onClose(); window.open("https://uk.test.givergy.com/cms-next/events", "_blank"); }}>Go to Campaign Manager</button>
+        <button type="submit" style={{ display: "block", margin: "14px auto 0", background: "none", border: "none", color: "var(--giv-cyan)", fontWeight: 700, fontSize: 14, cursor: "pointer" }}>Create campaign and go back to community</button>
       </form>
     );
   }
@@ -211,19 +236,14 @@ function Footer() {
           <div>
             <img className="foot__logo" src="assets/logos/givergy-logo-bymomogood-white.svg" alt="Givergy" />
             <p className="foot__blurb">The Givergy Community — help, inspiration and tools for fundraisers raising more for the causes that matter.</p>
-            <div className="foot__social">
-              <a title="LinkedIn"><span className="giv-icon">public</span></a>
-              <a title="Instagram"><span className="giv-icon">photo_camera</span></a>
-              <a title="Podcast"><span className="giv-icon">podcasts</span></a>
-            </div>
           </div>
           <div className="foot__col">
-            <h5>Learn</h5>
-            <a>How-To Guides</a><a>Fundraising Advice</a><a>Podcast</a><a>Webinars</a><a>Product Updates</a>
+            <h5>Guides &amp; Advice</h5>
+            <a>How-To Guides</a><a>Fundraising Advice</a>
           </div>
           <div className="foot__col">
-            <h5>Givergy</h5>
-            <a>About</a><a>Contact</a><a>Help Centre</a><a>Status</a>
+            <h5>Listen, Watch &amp; Learn</h5>
+            <a>Podcast</a><a>Webinars</a><a>Product Updates</a>
           </div>
         </div>
         <div className="foot__bottom">

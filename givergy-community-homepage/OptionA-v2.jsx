@@ -16,7 +16,7 @@ function scrollToId(id) {
 }
 
 // ---- Header
-function AHeader({ loggedIn, member, onLogin, onLogout, onTool, active, goHub, goPage }) {
+function AHeader({ loggedIn, member, onLogin, onLogout, onTool, active, goHub, goPage, goAccount }) {
   const [menu, setMenu] = useState(false);
   useEffect(() => {
     const close = () => setMenu(false);
@@ -49,8 +49,7 @@ function AHeader({ loggedIn, member, onLogin, onLogout, onTool, active, goHub, g
                     <div style={{ fontWeight: 800, color: "var(--giv-grey-100)" }}>{member.name}</div>
                     <div style={{ fontSize: 12, color: "var(--giv-fg-2)" }}>{member.org}</div>
                   </div>
-                  <a onClick={() => { setMenu(false); onTool("account"); }}><span className="giv-icon">manage_accounts</span> Account Details</a>
-                  <a onClick={() => { setMenu(false); window.open("https://cms.givergy.com", "_blank"); }}><span className="giv-icon">dashboard</span> Manage Campaigns <span className="giv-icon ext">open_in_new</span></a>
+                  <a onClick={() => { setMenu(false); goAccount(); }}><span className="giv-icon">manage_accounts</span> Account Details</a>
                   <a onClick={() => { setMenu(false); onLogout(); }}><span className="giv-icon">logout</span> Log Out</a>
                 </div>
               )}
@@ -126,14 +125,14 @@ function ArticleCard({ a, onOpen }) {
       <div className="acard__body">
         <h3 className="acard__title">{a.title}</h3>
         <p className="acard__excerpt">{a.excerpt}</p>
-        <div className="acard__meta"><span>{a.author}</span><span className="dot"></span><span>{a.read} read</span></div>
+        <div className="acard__meta"><span>{a.author}</span></div>
       </div>
     </button>
   );
 }
 
 // ---- Account tools (logged in) — the TOP hero when logged in
-function ToolsSection({ member, onTool }) {
+function ToolsSection({ member, onTool, onViewTickets }) {
   const order = ["manage", "create", "book", "support"];
   const items = order.map((id) => TOOLS.find((t) => t.id === id)).filter(Boolean);
   return (
@@ -148,13 +147,31 @@ function ToolsSection({ member, onTool }) {
         <h1 className="tools-hero__title">Welcome back, {member.name.split(" ")[0]}.</h1>
         <p className="tools-hero__sub">Jump back into your campaigns, book support for your next event, and manage everything in one place.</p>
         <div className="card-grid cols-4 tools-hero__grid">
-          {items.map((t) => (
-            <button key={t.id} className="tool" onClick={() => t.action === "external" ? window.open(t.href, "_blank") : onTool(t.action)}>
-              <span className={"tool__icon " + t.tone}><span className="giv-icon">{t.icon}</span></span>
-              <h4>{t.title} {t.action === "external" && <span className="giv-icon" style={{ fontSize: 16, color: "var(--giv-grey-50)" }}>open_in_new</span>}</h4>
-              <p>{t.desc}</p>
-            </button>
-          ))}
+          {items.map((t) => {
+            const links =
+              t.id === "support" ? [
+                { label: "Request support", onClick: () => onTool("ticket") },
+                { label: "View existing tickets", onClick: () => onViewTickets() },
+              ]
+              : t.action === "external" ? [{ label: "Go to Campaign Manager", onClick: () => window.open(t.href, "_blank") }]
+              : t.action === "create" ? [{ label: "Create a campaign", onClick: () => onTool("create") }]
+              : t.action === "book" ? [{ label: "View bookings", onClick: () => onTool("book") }]
+              : [];
+            return (
+              <div key={t.id} className="tool">
+                <span className={"tool__icon " + t.tone}><span className="giv-icon">{t.icon}</span></span>
+                <h4>{t.title} {t.action === "external" && <span className="giv-icon" style={{ fontSize: 16, color: "var(--giv-grey-50)" }}>open_in_new</span>}</h4>
+                <p>{t.desc}</p>
+                <span className="tool__links">
+                  {links.map((l, i) => (
+                    <span key={i} className="tool__link" onClick={l.onClick}>
+                      {l.label} <span className="giv-icon" style={{ fontSize: 16 }}>arrow_forward</span>
+                    </span>
+                  ))}
+                </span>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -305,12 +322,92 @@ function SearchResults({ query, onOpen, onBack, openGuide, openAdvice }) {
   );
 }
 
+// ---- Account details page (charity name + contracts / tickets / invoices)
+function statusClass(s) {
+  const k = s.toLowerCase();
+  if (k === "active" || k === "paid" || k === "resolved") return "spill spill--green";
+  if (k === "due" || k === "open" || k === "awaiting you") return "spill spill--amber";
+  return "spill spill--grey";
+}
+function AccountPage({ member, account, onBack, onNewTicket }) {
+  const crumbs = [
+    { label: "Home", icon: "home", onClick: onBack },
+    { label: "Account Details" },
+  ];
+  return (
+    <main className="acct-page">
+      <div className="wrap">
+        <Breadcrumb items={crumbs} />
+        <h1 className="acct-page__title">Account Details</h1>
+
+        <div className="acct-namecard">
+          <div>
+            <span className="acct-namecard__label">Account name</span>
+            <div className="acct-namecard__name">{member.org}</div>
+          </div>
+        </div>
+
+        <section className="acct-sec">
+          <div className="acct-sec__head"><h2>Contracts</h2></div>
+          <div className="acct-table">
+            {account.contracts.map((c) => (
+              <div className="acct-row" key={c.id}>
+                <div className="acct-row__main">
+                  <strong>{c.name}</strong>
+                  <span className="acct-row__meta">{c.ref} · {c.term}</span>
+                </div>
+                <span className="acct-row__val">{c.value}</span>
+                <span className={statusClass(c.status)}>{c.status}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="acct-sec">
+          <div className="acct-sec__head"><h2>Invoices</h2></div>
+          <div className="acct-table">
+            {account.invoices.map((inv) => (
+              <div className="acct-row" key={inv.id}>
+                <div className="acct-row__main">
+                  <strong>{inv.number}</strong>
+                  <span className="acct-row__meta">{inv.date}</span>
+                </div>
+                <span className="acct-row__val">{inv.amount}</span>
+                <span className={statusClass(inv.status)}>{inv.status}</span>
+                <a className="acct-row__link"><span className="giv-icon">download</span></a>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="acct-sec" id="acct-tickets">
+          <div className="acct-sec__head">
+            <h2>Support Tickets</h2>
+            <button className="btn btn--outline btn--sm" type="button" onClick={onNewTicket}>New ticket</button>
+          </div>
+          <div className="acct-table">
+            {account.tickets.map((t) => (
+              <div className="acct-row" key={t.id}>
+                <div className="acct-row__main">
+                  <strong>{t.subject}</strong>
+                  <span className="acct-row__meta">{t.event} · Updated {t.updated}</span>
+                </div>
+                <span className={statusClass(t.status)}>{t.status}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
+    </main>
+  );
+}
+
 // ---- App
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [tool, setTool] = useState(null);
-  const [view, setView] = useState("hub");       // hub | guides | advice | search | article
+  const [view, setView] = useState("hub");       // hub | guides | advice | search | article | account
   const [article, setArticle] = useState(null);  // { a, kicker }
   const [search, setSearch] = useState("");
   const [pageCat, setPageCat] = useState("All");
@@ -335,6 +432,11 @@ function App() {
   const openArticle = (a, kicker) => { setArticle({ a, kicker }); setView("article"); top(); };
   const goPage = (v, cat = "All") => { setView(v); setPageCat(cat); top(); };
   const runSearch = (q) => { setSearch(q); setView("search"); top(); };
+  const goAccount = (anchor) => {
+    setView("account");
+    if (anchor) setTimeout(() => scrollToId(anchor), 60);
+    else top();
+  };
   const goHub = (anchor) => {
     setView("hub"); setArticle(null);
     if (anchor) setTimeout(() => scrollToId(anchor), 60);
@@ -358,11 +460,12 @@ function App() {
   else if (view === "guides") content = <DedicatedPage eyebrow="Get set up fast" title="How-To Guides" short="Guides" sub="Step-by-step walkthroughs for every part of your Givergy campaign." items={GUIDES} onOpen={(a) => openArticle(a, "How-To Guides")} onBack={() => goHub()} initialCat={pageCat} />;
   else if (view === "advice") content = <DedicatedPage eyebrow="Raise more" title="Fundraising Advice" short="Advice" sub="Strategy and inspiration from fundraisers who've done it before." items={ADVICE} onOpen={(a) => openArticle(a, "Fundraising Advice")} onBack={() => goHub()} initialCat={pageCat} />;
   else if (view === "search") content = <SearchResults query={search} onOpen={openArticle} onBack={() => goHub()} openGuide={() => goPage("guides")} openAdvice={() => goPage("advice")} />;
+  else if (view === "account") content = <AccountPage member={MEMBER} account={ACCOUNT} onBack={() => goHub()} onNewTicket={() => setTool("ticket")} />;
   else content = (
     <main>
       {loggedIn ? (
         <React.Fragment>
-          <ToolsSection member={MEMBER} onTool={setTool} />
+          <ToolsSection member={MEMBER} onTool={setTool} onViewTickets={() => goAccount("acct-tickets")} />
           <SearchBand onSearch={runSearch} />
         </React.Fragment>
       ) : (
@@ -387,7 +490,7 @@ function App() {
 
   return (
     <React.Fragment>
-      <AHeader loggedIn={loggedIn} member={MEMBER} onLogin={() => setShowLogin(true)} onLogout={doLogout} onTool={setTool} active={active} goHub={goHub} goPage={goPage} />
+      <AHeader loggedIn={loggedIn} member={MEMBER} onLogin={() => setShowLogin(true)} onLogout={doLogout} onTool={setTool} active={active} goHub={goHub} goPage={goPage} goAccount={goAccount} />
       {content}
       <Footer />
       <LoginModal open={showLogin} onClose={() => setShowLogin(false)} onLogin={doLogin} />
