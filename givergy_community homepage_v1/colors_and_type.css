@@ -1,0 +1,224 @@
+/* =========================================================================
+   Givergy Design System — Core tokens
+   Source: givergy_components & styles_cms.fig
+   Type:   Nunito Sans (primary), Open Sans (small/secondary)
+   ========================================================================= */
+
+/* ---------- Local webfonts (Nunito Sans variable) + Google Fonts fallbacks ---------- */
+@font-face {
+  font-family: "Nunito Sans";
+  src: url("fonts/NunitoSans-VariableFont_YTLC_opsz_wdth_wght.ttf") format("truetype-variations");
+  font-weight: 200 1000;
+  font-stretch: 75% 125%;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Nunito Sans";
+  src: url("fonts/NunitoSans-Italic-VariableFont_YTLC_opsz_wdth_wght.ttf") format("truetype-variations");
+  font-weight: 200 1000;
+  font-stretch: 75% 125%;
+  font-style: italic;
+  font-display: swap;
+}
+/* Open Sans (helper / meta text) + Montserrat (tab items) — only secondaries.
+   Substitute via Google Fonts; flag to user if offline distribution is needed. */
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Montserrat:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0");
+
+:root {
+  /* ============== COLOR — Brand ============== */
+  --giv-navy:        #243776;  /* primary brand / button fills / icon strokes */
+  --giv-cyan:        #089DD9;  /* action / primary CTA */
+  --giv-magenta:     #BC2B87;  /* accent / active sidebar item / brand signature */
+  --giv-purple:      #6C3471;  /* secondary accent / logo gradient stop */
+
+  /* ============== COLOR — Neutral scale (grey-N · higher = darker) ============== */
+  --giv-black:       #000000;
+  --giv-grey-100:    #1F1F1F;  /* ink · primary text */
+  --giv-grey-90:     #5E6871;  /* deep slate */
+  --giv-grey-75:     #868E94;  /* DEFAULT body grey / icon / placeholder */
+  --giv-grey-50:     #AEB3B8;  /* muted / disabled text */
+  --giv-grey-25:     #D7D9DB;  /* hairline border / divider */
+  --giv-grey-15:     #E7E8EA;  /* row dividers */
+  --giv-grey-10:     #EFF0F1;  /* hover row / zebra */
+  --giv-grey-5:      #F5F6F6;  /* very subtle wash / circle btn bg */
+  --giv-grey-2:      #FAFAFB;  /* canvas tint / table zebra */
+  --giv-white:       #FFFFFF;
+
+  /* Backward-compatible aliases (older naming — prefer grey-N going forward) */
+  --giv-ink:         var(--giv-grey-100);
+  --giv-slate-700:   var(--giv-grey-90);
+  --giv-slate-600:   var(--giv-grey-75);
+  --giv-slate-500:   var(--giv-grey-50);
+  --giv-slate-400:   #DADADA;
+  --giv-slate-300:   var(--giv-grey-25);
+  --giv-slate-200:   var(--giv-grey-15);
+  --giv-slate-150:   var(--giv-grey-10);
+  --giv-slate-100:   var(--giv-grey-5);
+  --giv-slate-50:    var(--giv-grey-2);
+
+  /* ============== COLOR — Tints (8% washes used for banners/badges) ============== */
+  --giv-cyan-tint:   #E6F5FB;  /* callout banner bg / info chip */
+  --giv-magenta-tint:#FCF4F9;  /* warning/notice chip */
+  --giv-mint-tint:   #E6F9F4;  /* success chip */
+
+  /* ============== COLOR — Semantic ============== */
+  --giv-success:     #07BF91;
+  --giv-error:       #BC2B87;  /* errors share magenta in this brand */
+  --giv-warning:     #BC2B87;
+  --giv-info:        #089DD9;
+  --giv-link:        var(--giv-cyan);
+
+  /* ============== COLOR — Dark mode mapping (from Figma) ============== */
+  --giv-dm-navy:        #243776;
+  --giv-dm-cyan:        #089DD9;
+  --giv-dm-magenta:     #BC2B87;
+  --giv-dm-purple:      #6C3471;
+  --giv-dm-bg:          #000000;  /* deep black canvas */
+  --giv-dm-surface:     #0D1A2F;  /* navy-tinted dark surface */
+  --giv-dm-text-1:      #FFFFFF;
+  --giv-dm-text-2:      #AEB3B8;
+  --giv-dm-success:     #07BF91;
+  --giv-dm-border:      #5E6871;
+
+  /* ============== TYPOGRAPHY — families ============== */
+  --giv-font-display: "Nunito Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --giv-font-body:    "Nunito Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --giv-font-small:   "Open Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --giv-font-icon:    "Material Symbols Outlined";
+
+  /* ============== TYPOGRAPHY — sizes (from Figma) ============== */
+  /* Headings */
+  --giv-fs-h1: 50px;  --giv-fw-h1: 900;  --giv-lh-h1: 100%;
+  --giv-fs-h2: 28px;  --giv-fw-h2: 900;  --giv-lh-h2: 100%;
+  --giv-fs-h3: 20px;  --giv-fw-h3: 800;  --giv-lh-h3: 100%;
+  --giv-fs-h4: 16px;  --giv-fw-h4: 800;  --giv-lh-h4: 100%;
+  --giv-fs-h5: 13px;  --giv-fw-h5: 800;  --giv-lh-h5: 100%;
+
+  /* Paragraph */
+  --giv-fs-p-lg:       18px; --giv-fw-p-lg:       400;
+  --giv-fs-p-lg-b:     18px; --giv-fw-p-lg-b:     700;
+  --giv-fs-p:          16px; --giv-fw-p:          400;
+  --giv-fs-p-b:        16px; --giv-fw-p-b:        700;
+  --giv-fs-p-sm:       14px; --giv-fw-p-sm:       400;
+  --giv-fs-p-sm-b:     14px; --giv-fw-p-sm-b:     700;
+  --giv-fs-meta:       13px; --giv-fw-meta:       400; /* Open Sans 13 */
+
+  /* Buttons */
+  --giv-fs-btn-lg: 17px; --giv-fw-btn-lg: 800;
+  --giv-fs-btn:    15px; --giv-fw-btn:    800;
+  --giv-fs-btn-sm: 14px; --giv-fw-btn-sm: 800;
+
+  /* Nav (tab items also use nav-regular) */
+  --giv-fs-nav-lg: 20px; --giv-fw-nav-lg: 800;
+  --giv-fs-nav:    16px; --giv-fw-nav:    800;
+
+  /* ============== SEMANTIC text vars (legacy h1, p, etc) ============== */
+  --giv-fg-1: var(--giv-ink);          /* primary text */
+  --giv-fg-2: var(--giv-slate-600);    /* secondary text / labels */
+  --giv-fg-3: var(--giv-slate-500);    /* disabled / muted */
+  --giv-fg-brand: var(--giv-navy);
+  --giv-fg-action: var(--giv-cyan);
+  --giv-fg-active: var(--giv-magenta);
+  --giv-fg-success: var(--giv-success);
+  --giv-fg-on-dark: var(--giv-white);
+
+  --giv-bg-canvas: var(--giv-white);
+  --giv-bg-surface: var(--giv-white);
+  --giv-bg-sunken: var(--giv-slate-50);
+  --giv-bg-row-hover: var(--giv-slate-150);
+  --giv-bg-info: var(--giv-cyan-tint);
+  --giv-bg-warning: var(--giv-magenta-tint);
+  --giv-bg-success: var(--giv-mint-tint);
+
+  --giv-border-default: var(--giv-slate-300);
+  --giv-border-strong:  var(--giv-slate-500);
+  --giv-border-focus:   var(--giv-navy);
+  --giv-border-action:  var(--giv-cyan);
+
+  /* ============== SPACING ============== */
+  --giv-space-1:  4px;
+  --giv-space-2:  8px;
+  --giv-space-3:  12px;
+  --giv-space-4:  16px;
+  --giv-space-5:  20px;
+  --giv-space-6:  24px;
+  --giv-space-8:  32px;
+  --giv-space-12: 48px;
+  --giv-space-18: 72px;
+
+  /* ============== RADIUS ============== */
+  --giv-radius-input: 0px;     /* underlined inputs */
+  --giv-radius-card:  5px;
+  --giv-radius-modal: 5px;
+  --giv-radius-btn-sm: 6px;
+  --giv-radius-btn:   8px;
+  --giv-radius-pill:  999px;
+
+  /* ============== ELEVATION ============== */
+  --giv-shadow-soft:     0 2px 6px rgba(0,0,0,0.10), 0 1px 3px rgba(0,0,0,0.10);
+  --giv-shadow-elevated: 0 2px 4px rgba(0,0,0,0.30);
+  --giv-shadow-tooltip:  0 4px 12px rgba(0,0,0,0.15);
+
+  /* ============== MOTION ============== */
+  --giv-ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --giv-duration-fast: 120ms;
+  --giv-duration-base: 180ms;
+  --giv-duration-slow: 280ms;
+
+  /* ============== LAYOUT ============== */
+  --giv-navbar-h: 56px;
+  --giv-sidebar-w: 240px;
+  --giv-frame-pad: 48px;
+  --giv-section-gap: 72px;
+}
+
+/* =========================================================================
+   Semantic element styles — drop a <link rel="stylesheet"> to use directly.
+   These mirror the Figma "Headings" / "Paragraphs" / "Buttons" / "Navigation"
+   spec on the Global-Elements page.
+   ========================================================================= */
+
+.giv-h1, .giv-h2, .giv-h3, .giv-h4, .giv-h5,
+.giv-p-lg, .giv-p-lg-b, .giv-p, .giv-p-b, .giv-p-sm, .giv-p-sm-b {
+  font-family: var(--giv-font-display);
+  color: var(--giv-fg-1);
+  margin: 0;
+}
+
+.giv-h1 { font-size: var(--giv-fs-h1); font-weight: var(--giv-fw-h1); line-height: var(--giv-lh-h1); letter-spacing: -0.01em; }
+.giv-h2 { font-size: var(--giv-fs-h2); font-weight: var(--giv-fw-h2); line-height: var(--giv-lh-h2); letter-spacing: -0.01em; }
+.giv-h3 { font-size: var(--giv-fs-h3); font-weight: var(--giv-fw-h3); line-height: var(--giv-lh-h3); }
+.giv-h4 { font-size: var(--giv-fs-h4); font-weight: var(--giv-fw-h4); line-height: var(--giv-lh-h4); }
+.giv-h5 { font-size: var(--giv-fs-h5); font-weight: var(--giv-fw-h5); line-height: var(--giv-lh-h5); }
+
+.giv-p-lg   { font-size: var(--giv-fs-p-lg);   font-weight: var(--giv-fw-p-lg);   line-height: 1.4; }
+.giv-p-lg-b { font-size: var(--giv-fs-p-lg-b); font-weight: var(--giv-fw-p-lg-b); line-height: 1.4; }
+.giv-p      { font-size: var(--giv-fs-p);      font-weight: var(--giv-fw-p);      line-height: 1.45; }
+.giv-p-b    { font-size: var(--giv-fs-p-b);    font-weight: var(--giv-fw-p-b);    line-height: 1.45; }
+.giv-p-sm   { font-size: var(--giv-fs-p-sm);   font-weight: var(--giv-fw-p-sm);   line-height: 1.45; }
+.giv-p-sm-b { font-size: var(--giv-fs-p-sm-b); font-weight: var(--giv-fw-p-sm-b); line-height: 1.45; }
+
+.giv-meta {
+  font-family: var(--giv-font-small);
+  font-size: var(--giv-fs-meta);
+  font-weight: var(--giv-fw-meta);
+  color: var(--giv-fg-2);
+}
+
+/* Material Symbols utility */
+.giv-icon {
+  font-family: var(--giv-font-icon);
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  display: inline-block;
+  vertical-align: middle;
+  font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+.giv-icon.giv-icon--sm { font-size: 18px; }
+.giv-icon.giv-icon--lg { font-size: 32px; }
