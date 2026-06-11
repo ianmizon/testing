@@ -1,5 +1,5 @@
 // =====================================================================
-// OptionA-v2.jsx — Single-Scroll Hub (iteration)
+// hub.jsx — Community homepage app (App component + views)
 // Changes from v1:
 //  • Logged-in: Account Tools moved to the TOP (right after hero).
 //  • Hero search requires submit (Enter / Search button) → results view.
