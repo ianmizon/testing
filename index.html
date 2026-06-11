@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Givergy Community — Homepage Concepts</title>
+  <style>
+    :root { --navy: #243776; --magenta: #BC2B87; --grey: #f4f5f8; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: var(--grey); color: var(--navy); padding: 56px 24px;
+    }
+    .wrap { max-width: 720px; margin: 0 auto; }
+    h1 { font-size: 30px; margin: 0 0 6px; }
+    p.lead { color: #555; margin: 0 0 36px; font-size: 16px; }
+    .grid { display: grid; gap: 16px; }
+    a.card {
+      display: block; text-decoration: none; background: #fff;
+      border: 1px solid #e3e6ee; border-radius: 14px; padding: 20px 22px;
+      transition: border-color .15s, transform .15s, box-shadow .15s;
+    }
+    a.card:hover {
+      border-color: var(--magenta); transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(36,55,118,0.10);
+    }
+    a.card h2 { margin: 0 0 4px; font-size: 18px; color: var(--navy); }
+    a.card span { color: #777; font-size: 14px; }
+    footer { margin-top: 40px; color: #999; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Givergy Community — Homepage Concepts</h1>
+    <p class="lead">Select a concept to review.</p>
+    <div class="grid">
+      <a class="card" href="givergy-community-homepage/Givergy%20Community.html">
+        <h2>Givergy Community</h2>
+        <span>Primary homepage</span>
+      </a>
+      <a class="card" href="givergy-community-homepage/Option%20A%20-%20Single-Scroll%20Hub.html">
+        <h2>Option A — Single-Scroll Hub</h2>
+        <span>Single-page scrolling layout</span>
+      </a>
+      <a class="card" href="givergy-community-homepage/Option%20A%20-%20Single-Scroll%20Hub%20v2.html">
+        <h2>Option A — Single-Scroll Hub (v2)</h2>
+        <span>Revised single-scroll layout</span>
+      </a>
+      <a class="card" href="givergy-community-homepage/Option%20B%20-%20Sidebar%20Workspace.html">
+        <h2>Option B — Sidebar Workspace</h2>
+        <span>Sidebar-based workspace layout</span>
+      </a>
+    </div>
+    <footer>Givergy Community · internal review</footer>
+  </div>
+</body>
+</html>
