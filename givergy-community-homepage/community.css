@@ -2,7 +2,7 @@
    Givergy Community — shared styles (built on the CMS design tokens)
    Public-facing hub: clean CMS base + a warmer hero and brand colour.
    ========================================================================= */
-@import url("colors_and_type.css");
+@import url("colors_and_type.css?v=2");
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
